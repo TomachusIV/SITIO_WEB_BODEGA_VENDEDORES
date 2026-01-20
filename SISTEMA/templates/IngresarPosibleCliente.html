@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Nuevo Prospecto{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="bi bi-person-plus-fill me-2"></i> Ingresar Posible Cliente</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="post">
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                    {% endif %}
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">{{ form.rut.label }}</label>
+                            {{ form.rut }}
+                            <div class="text-danger small">{{ form.rut.errors.0 }}</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">{{ form.nombre_comercio.label }}</label>
+                            {{ form.nombre_comercio }}
+                            <div class="text-danger small">{{ form.nombre_comercio.errors.0 }}</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">{{ form.nombre.label }}</label>
+                            {{ form.nombre }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">{{ form.apellido.label }}</label>
+                            {{ form.apellido }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">{{ form.email.label }}</label>
+                            {{ form.email }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">{{ form.telefono.label }}</label>
+                            {{ form.telefono }}
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-bold">{{ form.ubicacion.label }}</label>
+                            {{ form.ubicacion }}
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-bold">{{ form.descripcion.label }}</label>
+                            {{ form.descripcion }}
+                        </div>
+                    </div>
+
+                    <hr class="mt-4 mb-3">
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{% url 'ver_posible_cliente' %}" class="btn btn-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-primary fw-bold">Guardar Prospecto</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

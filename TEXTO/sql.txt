@@ -1,0 +1,33 @@
+INSERT INTO SISTEMA_rol (id, nombre, descripcion) VALUES (1, 'Vendedor', 'Encargado de ventas');
+INSERT INTO SISTEMA_rol (id, nombre, descripcion) VALUES (2, 'Supervisor', 'Encargado de equipo');
+
+INSERT INTO SISTEMA_tipoproducto (id, nombre, descripcion) VALUES (1, 'Bebidas', 'Gaseosas y Jugos');
+INSERT INTO SISTEMA_tipoproducto (id, nombre, descripcion) VALUES (2, 'Abarrotes', 'Mercadería general');
+INSERT INTO SISTEMA_tipoproducto (id, nombre, descripcion) VALUES (3, 'Limpieza', 'Artículos de aseo');
+INSERT INTO SISTEMA_tipoproducto (id, nombre, descripcion) VALUES (4, 'N/A', 'No aplica (Venta no concretada)');
+
+INSERT INTO SISTEMA_metodocontacto (id, nombre, descripcion) VALUES (1, 'Presencial', 'Visita en terreno');
+INSERT INTO SISTEMA_metodocontacto (id, nombre, descripcion) VALUES (2, 'WhatsApp', 'Mensajería instantánea');
+INSERT INTO SISTEMA_metodocontacto (id, nombre, descripcion) VALUES (3, 'Teléfono', 'Llamada de voz');
+
+INSERT INTO SISTEMA_metodopago (id, nombre, descripcion) VALUES (1, 'Efectivo', 'Pago contra entrega');
+INSERT INTO SISTEMA_metodopago (id, nombre, descripcion) VALUES (2, 'Transferencia', 'Transferencia electrónica');
+INSERT INTO SISTEMA_metodopago (id, nombre, descripcion) VALUES (3, 'Crédito', 'Pago a 30 días');
+INSERT INTO SISTEMA_metodopago (id, nombre, descripcion) VALUES (4, 'N/A', 'No aplica (Venta no concretada)');
+
+INSERT INTO SISTEMA_tipocliente (id, nombre, descripcion) VALUES (1, 'Minorista', 'Cliente pequeño');
+INSERT INTO SISTEMA_tipocliente (id, nombre, descripcion) VALUES (2, 'Mayorista', 'Compra volumen');
+
+INSERT INTO SISTEMA_usuario (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined, rut, rol_id) VALUES (1, 'pbkdf2_sha256$dummy$hash', NULL, 1, 'ADMIN', 'Admin', 'Sistema', 'admin@sistema.cl', 1, 1, datetime('now'), '1-9', NULL);
+
+INSERT INTO SISTEMA_cliente (id, rut, nombre, apellido, email, telefono, nombre_comercio, ubicacion, fecha_ingreso, tipo_cliente_id) VALUES (1, '11.111.111-1', 'Juan', 'Perez', 'juan@mail.com', '+56912345678', 'Botillería El Paso', 'Calle Uno 123', datetime('now'), 1);
+INSERT INTO SISTEMA_cliente (id, rut, nombre, apellido, email, telefono, nombre_comercio, ubicacion, fecha_ingreso, tipo_cliente_id) VALUES (2, '22.222.222-2', 'Maria', 'Gomez', 'maria@mail.com', '+56987654321', 'Minimarket Sol', 'Av. Dos 456', datetime('now'), 2);
+
+INSERT INTO SISTEMA_posiblecliente (id, rut, nombre, apellido, email, telefono, descripcion, fecha_ingreso) VALUES (1, '33.333.333-3', 'Pedro', 'Soto', 'pedro@mail.com', '+56911223344', 'Interesado en línea de limpieza', datetime('now'));
+
+INSERT INTO SISTEMA_informevendedor (id, venta_realizada, descripcion, fecha_ingreso, fecha_inicio, fecha_termino, cliente_id, metodo_contacto_id, metodo_pago_id, vendedor_id) VALUES (1, 1, 'Venta inicial de prueba exitosa', datetime('now'), '2026-01-08 10:00:00', '2026-01-08 10:30:00', 1, 1, 1, 1);
+
+INSERT INTO SISTEMA_informevendedor_tipo_producto (id, informevendedor_id, tipoproducto_id) VALUES (1, 1, 1);
+INSERT INTO SISTEMA_informevendedor_tipo_producto (id, informevendedor_id, tipoproducto_id) VALUES (2, 1, 2);
+
+

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}Ingresar Reporte de Venta{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-2"> <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0 fs-5"><i class="bi bi-file-earmark-text"></i> Nuevo Informe</h4>
+                </div>
+                
+                <div class="card-body p-4">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        {% if form.errors %}
+                            <div class="alert alert-danger">
+                                <i class="bi bi-exclamation-triangle-fill"></i> Por favor revisa los errores.
+                            </div>
+                        {% endif %}
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">{{ form.cliente.label }}</label>
+                            {{ form.cliente }}
+                            {% if form.cliente.errors %}
+                                <div class="text-danger small">{{ form.cliente.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label class="form-label small fw-bold text-uppercase text-muted">Inicio</label>
+                                {{ form.fecha_inicio }}
+                                {% if form.fecha_inicio.errors %}
+                                    <div class="text-danger small">{{ form.fecha_inicio.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label small fw-bold text-uppercase text-muted">Término</label>
+                                {{ form.fecha_termino }}
+                                {% if form.fecha_termino.errors %}
+                                    <div class="text-danger small">{{ form.fecha_termino.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <label class="form-label fw-bold">{{ form.metodo_contacto.label }}</label>
+                                {{ form.metodo_contacto }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">{{ form.metodo_pago.label }}</label>
+                                {{ form.metodo_pago }}
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-primary">
+                                <i class="bi bi-basket"></i> {{ form.tipo_producto.label }}
+                            </label>
+                            
+                            <div class="p-3 bg-light rounded border">
+                                {{ form.tipo_producto }}
+                            </div>
+                        </div>
+
+                        <div class="mb-3 form-check bg-white p-3 rounded border shadow-sm">
+                            {{ form.venta_realizada }}
+                            <label class="form-check-label fw-bold ms-2 text-success" for="{{ form.venta_realizada.id_for_label }}">
+                                {{ form.venta_realizada.label }}
+                            </label>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">{{ form.descripcion.label }}</label>
+                            {{ form.descripcion }}
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'home' %}" class="btn btn-outline-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="bi bi-save"></i> Guardar Informe
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

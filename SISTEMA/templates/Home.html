@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio - Sistema Vendedores{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm bg-primary text-white">
+                <div class="card-body p-4">
+                    <h2 class="fw-bold mb-0">
+                        Hola, {{ user.get_full_name|default:user.username }}
+                    </h2>
+                    <p class="mb-0 opacity-75">Bienvenido de vuelta al panel de gestión.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4 g-3">
+        <div class="col-md-6 col-lg-3">
+            <a href="{% url 'ingresar_reporte' %}" class="text-decoration-none">
+                <div class="card border-0 shadow-sm h-100 card-hover-effect">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="bg-light text-primary rounded-circle p-3 me-3">
+                            <i class="bi bi-plus-lg fs-4"></i>
+                        </div>
+                        <div>
+                            <h6 class="card-title mb-0 text-dark fw-bold">Nuevo Reporte</h6>
+                            <small class="text-muted">Registrar visita</small>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold text-secondary">
+                        <i class="bi bi-clock-history me-2"></i> Últimos movimientos
+                    </h5>
+                    <a href="{% url 'ver_reporte' %}" class="btn btn-sm btn-outline-primary">Ver todo el historial</a>
+                </div>
+                
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light text-secondary">
+                                <tr>
+                                    <th class="ps-4">Cliente</th>
+                                    <th>Fecha/Hora</th>
+                                    <th>Venta</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for reporte in ultimos_reportes %}
+                                <tr>
+                                    <td class="ps-4 fw-bold text-dark">
+                                        {{ reporte.cliente }}
+                                    </td>
+                                    <td class="text-muted">
+                                        {{ reporte.fecha_inicio|date:"d M Y" }} 
+                                        <small>{{ reporte.fecha_inicio|time:"H:i" }}</small>
+                                    </td>
+                                    <td>
+                                        {% if reporte.venta_realizada %}
+                                            <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3">
+                                                <i class="bi bi-check-circle-fill me-1"></i> Exitosa
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-3">
+                                                No concretada
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-light text-muted" title="Ver detalle">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center py-5 text-muted">
+                                        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                        Aún no has registrado reportes hoy.
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card-hover-effect { transition: transform 0.2s; }
+    .card-hover-effect:hover { transform: translateY(-3px); }
+</style>
+{% endblock %}

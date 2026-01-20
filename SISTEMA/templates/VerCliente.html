@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block title %}Cartera de Clientes{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-0"><i class="bi bi-briefcase"></i> Cartera de Clientes</h2>
+            <p class="text-muted">Listado de clientes registrados y activos en el sistema.</p>
+        </div>
+    </div>
+
+    <div class="card shadow border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>RUT</th>
+                            <th>Comercio / Nombre</th>
+                            <th>Contacto</th>
+                            <th>Ubicación</th>
+                            <th class="text-center">Tipo</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cliente in object_list %}
+                        <tr>
+                            <td class="fw-bold text-secondary text-nowrap">
+                                {{ cliente.rut }}
+                            </td>
+                            
+                            <td>
+                                <div class="fw-bold text-dark">
+                                    {% if cliente.nombre_comercio %}
+                                        <i class="bi bi-shop me-1"></i> {{ cliente.nombre_comercio }}
+                                    {% else %}
+                                        <span class="text-muted fst-italic">Particular</span>
+                                    {% endif %}
+                                </div>
+                                <small class="text-muted">
+                                    <i class="bi bi-person"></i> {{ cliente.nombre }} {{ cliente.apellido }}
+                                </small>
+                            </td>
+                            
+                            <td>
+                                <div class="d-flex flex-column">
+                                    <span class="small text-muted"><i class="bi bi-envelope"></i> {{ cliente.email|default:"--" }}</span>
+                                    <span class="small text-muted"><i class="bi bi-telephone"></i> {{ cliente.telefono|default:"--" }}</span>
+                                </div>
+                            </td>
+                            
+                            <td>
+                                <span class="truncate-cell text-muted" title="{{ cliente.ubicacion }}">
+                                    {{ cliente.ubicacion|default:"No especificada" }}
+                                </span>
+                            </td>
+
+                            <td class="text-center">
+                                {% if cliente.tipo_cliente %}
+                                    <span class="badge bg-info text-dark border">
+                                        {{ cliente.tipo_cliente.nombre }}
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Sin Clasificar</span>
+                                {% endif %}
+                            </td>
+                            
+                            <td class="text-center">
+                                <button type="button" class="btn btn-sm btn-outline-primary" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#modalCliente{{ cliente.pk }}"
+                                        title="Ver Ficha Completa">
+                                    <i class="bi bi-eye"></i> Detalle
+                                </button>
+                                
+                                <div class="modal fade text-start" id="modalCliente{{ cliente.pk }}" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-dark text-white">
+                                                <h5 class="modal-title"><i class="bi bi-person-badge"></i> Ficha del Cliente</h5>
+                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row g-3">
+                                                    <div class="col-12 text-center bg-light p-3 rounded border mb-2">
+                                                        <h4 class="mb-0 text-primary">{{ cliente.nombre_comercio|default:cliente.nombre }}</h4>
+                                                        <span class="text-muted">{{ cliente.rut }}</span>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="small text-muted fw-bold text-uppercase">Representante</label>
+                                                        <p class="fs-5 border-bottom pb-1">{{ cliente.nombre }} {{ cliente.apellido }}</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="small text-muted fw-bold text-uppercase">Tipo</label>
+                                                        <p class="fs-5 border-bottom pb-1">{{ cliente.tipo_cliente.nombre|default:"No definido" }}</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="small text-muted fw-bold">Email</label>
+                                                        <p class="bg-light p-2 rounded border">{{ cliente.email|default:"-" }}</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="small text-muted fw-bold">Teléfono</label>
+                                                        <p class="bg-light p-2 rounded border">{{ cliente.telefono|default:"-" }}</p>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label class="small text-muted fw-bold">Dirección</label>
+                                                        <div class="bg-light p-3 rounded border">
+                                                            <i class="bi bi-geo-alt text-danger"></i> {{ cliente.ubicacion|default:"Sin dirección" }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 text-end mt-3">
+                                                        <small class="text-muted fst-italic">Desde: {{ cliente.fecha_ingreso|date:"d F Y" }}</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-5">
+                                <i class="bi bi-emoji-frown display-4 d-block mb-3"></i>
+                                No hay clientes registrados en la cartera.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer bg-white text-muted small">
+            Total Clientes: {{ object_list.count }}
+        </div>
+    </div>
+</div>
+{% endblock %}

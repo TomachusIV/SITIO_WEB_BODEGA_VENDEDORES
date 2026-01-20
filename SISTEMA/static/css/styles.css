@@ -1,0 +1,164 @@
+/* =========================================
+   1. ESTILOS GENERALES (Base)
+   ========================================= */
+body {
+    min-height: 100vh;
+    /* Gris claro neutro para mejor contraste */
+    background-color: #ebedef;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Ajuste para móvil: baja el contenido para no chocar con el navbar superior */
+.content-area {
+    padding: 20px;
+    margin-top: 60px; 
+    transition: all 0.3s;
+}
+
+/* En PC (pantallas grandes) quitamos el margen superior porque la barra es lateral */
+@media (min-width: 992px) {
+    .content-area {
+        margin-top: 0;
+        padding: 30px;
+    }
+}
+
+/* =========================================
+   2. BARRA LATERAL (Sidebar & Offcanvas)
+   ========================================= */
+.sidebar {
+    background-color: #212529; /* Dark Bootstrap Color */
+    color: white;
+}
+
+/* En PC, la sidebar es fija a la izquierda */
+@media (min-width: 992px) {
+    .sidebar {
+        min-height: 100vh;
+        position: fixed;
+        width: 16.66667%; /* Equivalente a col-lg-2 */
+        top: 0;
+        left: 0;
+        z-index: 100;
+        overflow-y: auto;
+    }
+    
+    /* Empujamos el contenido principal a la derecha */
+    .content-area {
+        margin-left: 16.66667%; 
+    }
+}
+
+/* Enlaces del menú */
+.sidebar a {
+    color: #cfd2d6;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+    border-radius: 5px;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.sidebar a:hover {
+    background-color: #343a40;
+    color: white;
+}
+
+.sidebar .active {
+    background-color: #0d6efd; /* Azul Bootstrap */
+    color: white;
+}
+
+/* Títulos pequeños en el menú */
+.nav-header {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 0 15px;
+}
+
+/* =========================================
+   3. LOGIN & UTILIDADES
+   ========================================= */
+.login-container { min-height: 80vh; padding: 20px; }
+.login-card { width: 100%; max-width: 400px; }
+
+.text-small-sub { font-size: 0.85em; }
+.text-xsmall { font-size: 0.75rem; }
+.note-box { min-height: 80px; }
+
+/* Para tablas: Cortar texto largo en celdas */
+.truncate-cell {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
+    vertical-align: middle;
+}
+@media (min-width: 992px) {
+    .truncate-cell { max-width: 200px; }
+}
+
+/* =========================================
+   4. CHECKBOXES (Estilo Tarjeta Vertical)
+   ========================================= */
+
+/* 1. El contenedor general */
+.checkbox-container {
+    display: flex;
+    flex-wrap: wrap; /* Si no caben, bajan a la siguiente línea */
+    gap: 15px;       /* Espacio entre tarjetas */
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+/* 2. La tarjeta blanca (Label) */
+.checkbox-container label {
+    display: flex;
+    
+    /* EL TRUCO: Invertimos la columna para que el Texto suba y el Input baje */
+    flex-direction: column-reverse; 
+    
+    align-items: center;     /* Centrado horizontal */
+    justify-content: center; /* Centrado vertical */
+    text-align: center;      /* Texto centrado */
+    
+    /* Tamaño de las tarjetas */
+    width: 110px;    /* Ancho fijo para que se vean uniformes */
+    height: 100px;   /* Alto fijo */
+    
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    
+    /* Asegura que el texto no se salga */
+    word-break: break-word; 
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #495057;
+}
+
+/* 3. Efecto al pasar el mouse o seleccionar */
+.checkbox-container label:hover {
+    transform: translateY(-2px); /* Pequeña animación hacia arriba */
+    border-color: #0d6efd;
+    box-shadow: 0 4px 8px rgba(13, 110, 253, 0.15);
+}
+
+/* 4. El cuadrito del Checkbox */
+.checkbox-container input[type="checkbox"] {
+    margin-top: 10px !important; /* Separación del texto (que ahora está arriba) */
+    margin-right: 0 !important;
+    
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #0d6efd; /* Color azul al marcar */
+}

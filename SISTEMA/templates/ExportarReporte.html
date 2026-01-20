@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Exportar Reportes{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow">
+            <div class="card-header bg-dark text-white">
+                <h4 class="mb-0"><i class="bi bi-cloud-download"></i> Centro de Descargas</h4>
+            </div>
+            <div class="card-body p-4">
+                <p class="text-muted mb-4">Selecciona el rango de fechas para generar el reporte de gestión.</p>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold small text-uppercase text-muted">Filtros Rápidos</label>
+                    <div class="btn-group w-100 shadow-sm" role="group">
+                        <button type="button" class="btn btn-outline-primary" onclick="setFecha('hoy')">Hoy</button>
+                        <button type="button" class="btn btn-outline-primary" onclick="setFecha('semana')">Esta Semana</button>
+                        <button type="button" class="btn btn-outline-primary" onclick="setFecha('mes')">Este Mes</button>
+                    </div>
+                </div>
+
+                <hr class="text-muted">
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Desde</label>
+                            {{ form.fecha_inicio }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Hasta</label>
+                            {{ form.fecha_termino }}
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-3 mt-5">
+                        <button type="submit" name="btn_excel" class="btn btn-success btn-lg shadow-sm">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <i class="bi bi-file-earmark-excel fs-4 me-2"></i>
+                                <div>
+                                    <span class="d-block fw-bold">Descargar Excel</span>
+                                    <span class="small text-xsmall">Formato .xlsx editable</span>
+                                </div>
+                            </div>
+                        </button>
+
+                        <button type="submit" name="btn_pdf" class="btn btn-danger btn-lg shadow-sm">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <i class="bi bi-file-earmark-pdf fs-4 me-2"></i>
+                                <div>
+                                    <span class="d-block fw-bold">Descargar PDF</span>
+                                    <span class="small text-xsmall">Documento listo para imprimir</span>
+                                </div>
+                            </div>
+                        </button>
+
+                        <a href="{% url 'home' %}" class="btn btn-link text-muted mt-2">Volver al inicio</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function setFecha(tipo) {
+        const hoy = new Date();
+        let inicio = new Date();
+        let fin = new Date(); 
+        const format = (date) => {
+            const yyyy = date.getFullYear();
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const dd = String(date.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        };
+
+        if (tipo === 'semana') {
+            const dia = hoy.getDay(); 
+            const diff = hoy.getDate() - dia + (dia === 0 ? -6 : 1); 
+            inicio.setDate(diff);
+        } else if (tipo === 'mes') {
+            inicio = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+        }
+        document.getElementById('id_fecha_inicio').value = format(inicio);
+        document.getElementById('id_fecha_termino').value = format(fin);
+    }
+</script>
+{% endblock %}

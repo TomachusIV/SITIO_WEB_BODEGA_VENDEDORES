@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block title %}Posibles Clientes{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-0"><i class="bi bi-people"></i> Posibles Clientes (Leads)</h2>
+            <p class="text-muted">Gestiona los prospectos interesados antes de convertirlos en clientes.</p>
+        </div>
+        <a href="{% url 'ingresar_posible_cliente' %}" class="btn btn-primary btn-sm shadow-sm">
+            <i class="bi bi-person-plus-fill"></i> Nuevo Prospecto
+        </a>
+    </div>
+
+    <div class="card shadow border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>RUT</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Fecha Ingreso</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for lead in object_list %}
+                        <tr>
+                            <td class="fw-bold text-secondary text-nowrap">{{ lead.rut|default:"-- s/n --" }}</td>
+                            
+                            <td>
+                                {{ lead.nombre }} {{ lead.apellido }}
+                                {% if lead.nombre_comercio %}
+                                    <br>
+                                    <small class="text-muted"><i class="bi bi-shop"></i> {{ lead.nombre_comercio }}</small>
+                                {% endif %}
+                            </td>
+                            
+                            <td>{{ lead.email|default:"-- s/n --" }}</td>
+                            
+                            <td>
+                                <i class="bi bi-calendar3 text-muted"></i> 
+                                {{ lead.fecha_ingreso|date:"d/m/Y" }}
+                            </td>
+                            
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-sm btn-outline-info" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#modalLead{{ lead.pk }}"
+                                            title="Ver ficha completa">
+                                        <i class="bi bi-eye"></i> Nota
+                                    </button>
+
+                                    <a href="{% url 'ingresar_cliente' lead.pk %}" class="btn btn-success btn-sm" title="Convertir en Cliente Real">
+                                        <i class="bi bi-arrow-right-circle"></i> Convertir
+                                    </a>
+                                </div>
+
+                                <div class="modal fade text-start" id="modalLead{{ lead.pk }}" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-info text-white">
+                                                <h5 class="modal-title"><i class="bi bi-person-vcard"></i> Ficha Completa</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row g-3">
+                                                    <div class="col-12 border-bottom pb-2 mb-2">
+                                                        <h6 class="text-primary fw-bold">Identificación Personal</h6>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="small text-muted fw-bold text-uppercase">Nombre Completo</label>
+                                                        <p class="fs-5 mb-0 fw-bold">{{ lead.nombre }} {{ lead.apellido }}</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="small text-muted fw-bold text-uppercase">RUT</label>
+                                                        <p class="fs-5 mb-0">{{ lead.rut|default:"No registrado" }}</p>
+                                                    </div>
+
+                                                    <div class="col-12 border-bottom pb-2 mb-2 mt-3">
+                                                        <h6 class="text-primary fw-bold">Datos Comerciales</h6>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="small text-muted fw-bold">Nombre Comercio</label>
+                                                        <p class="border p-2 rounded bg-light"><i class="bi bi-shop me-1"></i> {{ lead.nombre_comercio|default:"-" }}</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="small text-muted fw-bold">Ubicación</label>
+                                                        <p class="border p-2 rounded bg-light"><i class="bi bi-geo-alt me-1"></i> {{ lead.ubicacion|default:"-" }}</p>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label class="small text-muted fw-bold">Teléfono</label>
+                                                        <p class="border p-2 rounded bg-light"><i class="bi bi-telephone me-1"></i> {{ lead.telefono|default:"-" }}</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="small text-muted fw-bold">Email</label>
+                                                        <p class="border p-2 rounded bg-light"><i class="bi bi-envelope me-1"></i> {{ lead.email|default:"-" }}</p>
+                                                    </div>
+
+                                                    <div class="col-12 mt-3">
+                                                        <label class="small text-muted fw-bold text-uppercase mb-1"><i class="bi bi-journal-text"></i> Notas</label>
+                                                        <div class="p-3 bg-light border rounded note-box">
+                                                            {{ lead.descripcion|linebreaks|default:"Sin descripción." }}
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-12 text-end mt-2">
+                                                        <small class="text-muted fst-italic">Ingresado: {{ lead.fecha_ingreso|date:"d de F Y, H:i" }}</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer bg-light">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                <a href="{% url 'ingresar_cliente' lead.pk %}" class="btn btn-success">
+                                                    <i class="bi bi-arrow-right-circle"></i> Convertir Ahora
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-5">
+                                <i class="bi bi-people display-4 d-block mb-3"></i> No hay leads pendientes.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer bg-white text-muted small">
+            Total Leads: {{ object_list.count }}
+        </div>
+    </div>
+</div>
+{% endblock %}
