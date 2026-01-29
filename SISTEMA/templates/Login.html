@@ -1,31 +1,40 @@
-{% extends 'base.html' %}
+{% extends 'BaseLogin.html' %}
 
 {% block content %}
 <div class="d-flex justify-content-center align-items-center login-container">
-    <div class="card shadow login-card">
-        <div class="card-header bg-primary text-white text-center">
-            <h4>Iniciar Sesión</h4>
+    <div class="card shadow login-card border-0">
+        <div class="card-header bg-primary text-white text-center py-3">
+            <h4 class="mb-0 fw-bold"><i class="bi bi-shield-lock"></i> Iniciar Sesión</h4>
         </div>
-        <div class="card-body">
+        <div class="card-body p-4">
+            
             <form method="post">
                 {% csrf_token %}
+                
                 {% if form.non_field_errors %}
-                    <div class="alert alert-danger">
-                        {{ form.non_field_errors }}
+                    <div class="alert alert-danger d-flex align-items-center">
+                        <i class="bi bi-exclamation-circle-fill me-2"></i>
+                        <div>{{ form.non_field_errors }}</div>
                     </div>
                 {% endif %}
 
                 {% for field in form %}
                 <div class="mb-3">
-                    <label class="form-label">{{ field.label }}</label>
+                    <label class="form-label fw-bold text-secondary small text-uppercase">{{ field.label }}</label>
                     {{ field }} 
                 </div>
                 {% endfor %}
 
                 <div class="d-grid mt-4">
-                    <button type="submit" class="btn btn-primary">Ingresar</button>
+                    <button type="submit" class="btn btn-primary btn-lg fw-bold">
+                        Ingresar al Sistema
+                    </button>
                 </div>
             </form>
+
+        </div>
+        <div class="card-footer text-center bg-white text-muted small py-3">
+            Sistema de Gestión de Reportes v1.0
         </div>
     </div>
 </div>

@@ -20,11 +20,20 @@ from collections import Counter
 from SISTEMA.forms.forms import LoginForm, PosibleClienteForm, InformeVendedorForm, ClienteForm, ReporteExportForm
 from SISTEMA.models.models import InformeVendedor, PosibleCliente, Cliente, Usuario
 
+
+
 class SoloAdminMixin(UserPassesTestMixin):
-
     def test_func(self):
+        usuario = self.request.user
+        
+        if not usuario.is_authenticated:
+            return False
 
-        return self.request.user.is_authenticated and self.request.user.is_staff
+        es_admin_tecnico = usuario.is_staff or usuario.is_superuser
+        
+        es_jefe = usuario.rol is not None and usuario.rol.nombre == "Jefe"
+
+        return es_admin_tecnico or es_jefe
 
     def handle_no_permission(self):
         messages.error(self.request, "No tienes permiso para acceder a esta opción.")

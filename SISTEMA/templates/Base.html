@@ -16,7 +16,7 @@
     <nav class="navbar navbar-dark bg-dark d-lg-none fixed-top shadow">
         <div class="container-fluid">
             <a class="navbar-brand fw-bold" href="#">
-                <i class="bi bi-shop-window"></i> Gestión Reporte
+                <i class="bi bi-shop-window"></i> Gestión Reportes
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu">
                 <span class="navbar-toggler-icon"></span>
@@ -54,17 +54,27 @@
 
                             <li class="nav-header text-uppercase small text-muted mt-3 mb-1">Clientes</li>
                             <li><a href="{% url 'ingresar_posible_cliente' %}"><i class="bi bi-person-plus-fill me-2"></i> Nuevo Posible Cliente</a></li>
-                            <li><a href="{% url 'ver_posible_cliente' %}"><i class="bi bi-people me-2"></i> Ver Posible Cliente</a></li>
-                            <li><a href="{% url 'ver_cliente' %}"><i class="bi bi-briefcase me-2"></i> Clientes</a></li>
-                        </ul>
+                            <li><a href="{% url 'ver_posible_cliente' %}"><i class="bi bi-people me-2"></i> Ver Posibles Clientes</a></li>
+                            
+                            {% if user.is_staff or user.rol.nombre == "Jefe" %}
+                            <li>
+                                <a href="{% url 'ver_cliente' %}" class="text-info">
+                                    <i class="bi bi-briefcase me-2"></i> Cartera Clientes
+                                </a>
+                            </li>
+                            {% endif %}
+                            </ul>
 
                         <hr>
+                        
                         <div class="dropdown mt-auto">
                             <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown">
                                 <i class="bi bi-person-circle fs-4 me-2"></i>
-                                <strong>{{ user.username }}</strong>
+                                <strong>{{ user.username|title }}</strong>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                                <li><span class="dropdown-header">Rol: {{ user.rol.nombre|default:"Vendedor" }}</span></li>
+                                <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form action="{% url 'logout' %}" method="post">
                                         {% csrf_token %}
@@ -79,9 +89,10 @@
             {% endif %}
 
             <div class="col-12 col-lg-{{ user.is_authenticated|yesno:'10,12' }} content-area">
+                
                 {% if messages %}
                     {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert">
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm m-3" role="alert">
                             {{ message }}
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>

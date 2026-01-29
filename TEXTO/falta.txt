@@ -1,5 +1,0 @@
-Formato del excel. ------------------------------------------------------------------------------------------> CHECK :3
-archivo css.  -----------------------------------------------------------------------------------------------> CHECK :3
-usar el admin.py para crear a los Usuarios. -----------------------------------------------------------------> CHECK :3
-ver configuracion de modo oscuro.
-Logica de logeo: si salgo del navegador o reingreso al sitio este me mande al login de nuevo. ---------------> CHECK :3 (a medias)
