@@ -9,14 +9,21 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-1e7y++errv6=j17+vgy0p8brk*6+v6c!9zvgl!6l)o+0q-0!#&')
 
-DEBUG = os.getenv('DEBUG', 'False') == 'False'
+DEBUG = os.environ.get('DEBUG') == 'True'
 
-ALLOWED_HOSTS = os.getenv('worldpetmaule.com', 'www.worldpetmaule.com').split(',')
+allowed_hosts_env = os.environ.get('ALLOWED_HOSTS')
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-
+if allowed_hosts_env:
+    ALLOWED_HOSTS = allowed_hosts_env.split(',')
+else:
+    ALLOWED_HOSTS = [
+        'localhost', 
+        '127.0.0.1', 
+        'worldpetmaule.com', 
+        'www.worldpetmaule.com'
+    ]
 
 # Application definition
 
@@ -64,8 +71,12 @@ WSGI_APPLICATION = 'BODEGA_SISTEMA_VENDEDORES.wsgi.application'
 # Database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': '3306',
     }
 }
 
@@ -116,5 +127,4 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
 
 # --- CONFIGURACIÓN CRÍTICA AGREGADA ---
-# Esto es obligatorio porque estás usando un usuario personalizado (AbstractUser)
 AUTH_USER_MODEL = 'SISTEMA.Usuario'

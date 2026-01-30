@@ -5,6 +5,7 @@ import sys
 
 
 def main():
+    
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'BODEGA_SISTEMA_VENDEDORES.settings')
     try:
@@ -19,4 +20,5 @@ def main():
 
 
 if __name__ == '__main__':
+    print(f" ESTOY CORRIENDO CON: {sys.executable}")
     main()

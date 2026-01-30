@@ -33,40 +33,6 @@ def procesar_datos_informe(cleaned_data):
 
     return cleaned_data
 
-
-def procesar_datos_informe(cleaned_data):
-    """
-    Lógica de negocio para validar fechas y gestionar casos de 'No Venta'.
-    """
-    from SISTEMA.models import MetodoPago, TipoProducto
-
-    venta_realizada = cleaned_data.get('venta_realizada')
-    hora_inicio = cleaned_data.get('fecha_inicio')
-    hora_termino = cleaned_data.get('fecha_termino')
-    
-    if hora_inicio and hora_termino:
-        if hora_termino <= hora_inicio:
-            raise ValidationError({'fecha_termino': 'La hora de término debe ser mayor a la de inicio.'})
-        
-        hoy = timezone.now().date()
-        cleaned_data['fecha_inicio'] = timezone.datetime.combine(hoy, hora_inicio)
-        cleaned_data['fecha_termino'] = timezone.datetime.combine(hoy, hora_termino)
-
-    if not venta_realizada:
-        try:
-            metodo_pago_na = MetodoPago.objects.get(nombre="N/A")
-            tipo_producto_na = TipoProducto.objects.get(nombre="N/A")
-            
-            cleaned_data['metodo_pago'] = metodo_pago_na
-            cleaned_data['tipo_producto'] = [tipo_producto_na]
-            
-        except MetodoPago.DoesNotExist:
-            raise ValidationError({'metodo_pago': 'Error crítico: No existe la opción "N/A" en MetodoPago.'})
-        except TipoProducto.DoesNotExist:
-            raise ValidationError({'tipo_producto': 'Error crítico: No existe la opción "N/A" en TipoProducto.'})
-
-    return cleaned_data
-
 def validar_rut(rut):
     """
     Valida que un RUT chileno sea matemáticamente correcto Y tenga un largo válido.
